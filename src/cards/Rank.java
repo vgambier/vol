@@ -1,5 +1,6 @@
 package cards;
 
+import vol.Game;
 import vol.Main.Sayable;
 
 public enum Rank {
@@ -44,59 +45,59 @@ public enum Rank {
 
 	// Effects
 
-	public static void cancelOne() {
+	public static void cancelOne(Game game) {
 		System.out.println("Cancelled a one");
 	}
 
-	public static void cancelTwo() {
+	public static void cancelTwo(Game game) {
 		System.out.println("Cancelled a two");
 	}
 
-	public static void pickLotsOfCards() {
+	public static void pickLotsOfCards(Game game) {
 		System.out.println("OP effect");
 	}
 
-	public static void swap() {
+	public static void swap(Game game) {
 		System.out.println("Swapping cards");
 	}
 
-	public static void replayCard() {
+	public static void replayCard(Game game) {
 		System.out.println("Must replay a card of your choice");
 	}
 
-	public static void luckySeven() {
+	public static void luckySeven(Game game) {
 		System.out.println("Wait until you get 3 of them");
 	}
 
-	public static void pickedEight() {
+	public static void pickedEight(Game game) {
 		System.out.println("Wait until you get 4 of them");
 	}
 
-	public static void opponentReplayCards() {
+	public static void opponentReplayCards(Game game) {
 		System.out.println("Opponent must replay a card of their choice");
 	}
 
-	public static void iForgot() {
+	public static void iForgot(Game game) {
 		System.out.println("What does a 10 do again?");
 	}
 
-	public static void giveJackToOpponent() {
+	public static void giveJackToOpponent(Game game) {
 		System.out.println("Immediately give this card to your opponent");
 	}
 
-	public static void pickedQueen() {
+	public static void pickedQueen(Game game) {
 		System.out.println("Wait until you get 2, or check if you win");
 	}
 
-	public static void cancelCardNoCounter() {
+	public static void cancelCardNoCounter(Game game) {
 		System.out.println("Cancel a card with no counter, or check if you win");
 	}
 
-	public static void cancelCard() {
+	public static void cancelCard(Game game) {
 		System.out.println("Cancel a card");
 	}
 
-	public static void jokersTrick() {
+	public static void jokersTrick(Game game) {
 		System.out.println("Joker's trick");
 	}
 

@@ -1,5 +1,6 @@
 package cards;
 
+import vol.Game;
 import vol.Main.Sayable;
 
 public enum Color {
@@ -28,19 +29,19 @@ public enum Color {
 
 	// Effects
 
-	public static void opponentPlaysTwice() {
+	public static void opponentPlaysTwice(Game game) {
 		System.out.println("The opponent will play twice next turn");
 	}
 
-	public static void pickedDiamond() {
+	public static void pickedDiamond(Game game) {
 		System.out.println("Picked a diamond");
 	}
 
-	public static void pickedHeart() {
+	public static void pickedHeart(Game game) {
 		System.out.println("Picked a heart");
 	}
 
-	public static void giveCardtoOpponent() {
+	public static void giveCardtoOpponent(Game game) {
 		System.out.println("Must give card to opponent");
 	}
 

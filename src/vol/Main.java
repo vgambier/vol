@@ -7,7 +7,7 @@ import cards.CardDeck;
 public class Main {
 
 	public interface Sayable {
-		void say();
+		void say(Game game);
 	}
 
 	public static void main(String[] args) throws Exception {
