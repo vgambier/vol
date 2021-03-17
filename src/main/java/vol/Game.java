@@ -37,7 +37,7 @@ public class Game {
 
 				// Play cards
 				for (Card card : player.getHand().getCards()) {
-					card.getRank().getEffect().say();
+					card.getRank().getEffect().say(); // TODO
 					card.getColor().getEffect().say();
 				}
 

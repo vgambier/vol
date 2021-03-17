@@ -18,20 +18,6 @@ public class CardDeck {
 		this.cards = cards;
 	}
 
-	/* TODO
-	Creates a deck with 52 cards.
-	public CardDeck() {
-	
-		ArrayList<Card> cards = new ArrayList<Card>();
-		for (Color color : Color.values()) {
-			for (Rank rank : Rank.values()) {
-				cards.add(new Card(color, rank));
-			}
-		}
-		this.cards = cards;
-	}
-	*/
-
 	/**
 	 * Default constructor. Creates a deck with all 54 cards.
 	 */
@@ -79,6 +65,10 @@ public class CardDeck {
 	public void addCards(ArrayList<Card> addedCards) {
 		cards.addAll(addedCards);
 	}
+	
+	public ArrayList<Card> getCards() {
+		return cards;
+	}
 
 	@Override
 	public String toString() {
@@ -90,10 +80,6 @@ public class CardDeck {
 		}
 
 		return str.toString();
-	}
-
-	public ArrayList<Card> getCards() {
-		return cards;
 	}
 
 }
