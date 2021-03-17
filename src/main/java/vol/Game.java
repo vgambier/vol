@@ -9,16 +9,25 @@ import cards.Rank;
 public class Game {
 
   private ArrayList<Player> players;
+  private Player currentPlayer;
 
   public Game(ArrayList<Player> players) throws Exception {
 
     if (players.size() < 2)
       throw new Exception("There must be at least 2 players.");
+    // TODO check that all the players are different (use an ordered set?)
 
     this.players = players;
+    this.currentPlayer = players.get(0); // TODO nose rule
+
   }
 
+  /**
+   * TODO write this javadoc
+   */
   public void start() throws Exception {
+
+    // TODO: two modes, one is silent with no instructions on what is going on
 
     CardDeck cardDeck = new CardDeck();
     cardDeck.shuffle();
@@ -29,34 +38,65 @@ public class Game {
 
       for (Player player : players) {
 
-        // Pick a card
-        player.pickNCards(1, cardDeck);
+        currentPlayer = player;
 
-        // Show hand
-        System.out.print("Current hand of " + player.getName() + ": ");
-        System.out.println(player.getHand().toString());
+        boolean canPlay = true;
+        while (canPlay) {
 
-        // Play cards
-        for (Card card : player.getHand().getCards()) {
+          // Pick a card
+          player.pickNCards(1, cardDeck);
 
-          // TODO let players choose the order of their plays
+          // Show hand
+          System.out.print("Current hand of " + player.getName() + ": ");
+          System.out.println(player.getHand().toString());
 
-          Rank rank = card.getRank();
-          System.out.print(rank + ": ");
-          rankEffect(rank);
+          // Play cards
+          for (Card card : player.getHand().getCards()) {
 
-          Color color = card.getColor();
-          System.out.print(color + ": ");
-          colorEffect(color);
+            // TODO let players choose the order of their plays
+
+            Rank rank = card.getRank();
+            System.out.print(rank + ": ");
+            rankEffect(rank);
+
+            Color color = card.getColor();
+            System.out.print(color + ": ");
+            colorEffect(color);
+
+            // TODO use up the card by moving it to another array
+            // TODO how to distinguish between the used up color and used up rank? the whole must be
+            // remembered
+          }
+
+          // Don't let the player play again if they're not under the effect of a club
+          if (!player.canPlayTwice()) {
+            canPlay = false;
+          } else {
+            player.setCanPlayTwice(false); // The player gets only one extra turn
+          }
+
         }
-
       }
 
-      isOver = true;
+      isOver = true; // TODO temp
 
     }
 
   }
+
+  /**
+   * Find the player that will play or attempt to play after the current player has finished their
+   * turn or turns
+   * 
+   * @return the player that will play next
+   */
+  private Player nextPlayer() {
+
+    int currentPlayerIndex = players.indexOf(currentPlayer);
+    return players.get(currentPlayerIndex == players.size() - 1 ? 0 : currentPlayerIndex + 1);
+  }
+
+  // TODO maybe write javadoc for all effects
 
   private void rankEffect(Rank rank) throws Exception {
 
@@ -104,7 +144,7 @@ public class Game {
         jokersTrick();
         break;
       default:
-        throw new Exception("Unexpected color!"); // TODO better exception handling
+        throw new Exception("Unexpected rank!"); // TODO better exception handling
     }
   }
 
@@ -142,6 +182,7 @@ public class Game {
 
   private void pickLotsOfCards() {
     // TODO implement pickLotsOfCards
+    // TODO implement secondary 8 4 effect
     System.out.println("OP effect");
   }
 
@@ -207,9 +248,9 @@ public class Game {
   // Color effects
 
   private void opponentPlaysTwice() {
-    // TODO implement opponentPlaysTwice
-    System.out.println("The opponent will play twice next turn");
-    // opponent.canPlayTwice
+    Player nextPlayer = nextPlayer();
+    System.out.printf("%s will play twice when it is their turn\n", nextPlayer);
+    nextPlayer.setCanPlayTwice(true);
   }
 
   private void pickedDiamond() {

@@ -1,4 +1,4 @@
-package cards;
+package cards; // TODO rename packages
 
 public class Card {
 

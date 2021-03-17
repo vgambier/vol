@@ -7,7 +7,8 @@ import cards.CardDeck;
 public class Player {
 
   private String name;
-  private CardDeck hand;
+  private CardDeck hand; // Active part of the deck
+  private CardDeck inactiveCards; // Inactive part of the deck
 
   private boolean canPlayTwice;
   private boolean isSilenced;
@@ -25,6 +26,7 @@ public class Player {
   public Player(String name) {
     this.name = name;
     this.hand = new CardDeck(new ArrayList<Card>()); // Empty hand
+    this.inactiveCards = new CardDeck(new ArrayList<Card>()); // Ditto
 
     this.canPlayTwice = false;
     this.isSilenced = false;
@@ -49,6 +51,19 @@ public class Player {
   }
 
   public String getName() {
+    return name;
+  }
+
+  public boolean canPlayTwice() {
+    return canPlayTwice;
+  }
+
+  public void setCanPlayTwice(boolean canPlayTwice) {
+    this.canPlayTwice = canPlayTwice;
+  }
+
+  @Override
+  public String toString() {
     return name;
   }
 

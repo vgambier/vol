@@ -15,7 +15,7 @@ public enum Rank {
   QUEEN("Q"),
   KING("K"),
   ACE("A"),
-  JOKER("!");
+  JOKER("!"); // TODO joker symbol 🂿
 
   private String name;
 

@@ -2,6 +2,7 @@ package cards;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CardDeck {
@@ -32,17 +33,24 @@ public class CardDeck {
       }
     }
 
-    cards.add(new Card(Color.HEARTS, Rank.JOKER));
-    cards.add(new Card(Color.SPADES, Rank.JOKER));
+    cards.add(new Card(Color.HEARTS, Rank.JOKER)); // TODO Joker is neither HEARTS nor SPADES...
+    cards.add(new Card(Color.SPADES, Rank.JOKER)); // inheritance with Joker being a separate class?
+                                                   // Card > StandardCard + JokerCard
 
     this.cards = cards;
   }
 
+  /**
+   * TODO write this javadoc
+   */
   public void shuffle() {
     Collections.shuffle(cards);
   }
 
-  public ArrayList<Card> pickNCards(int n) throws Exception {
+  /**
+   * TODO write this javadoc
+   */
+  public List<Card> pickNCards(int n) throws Exception {
 
     if (n > cards.size())
       throw new Exception("Cannot pick more cards than there are in the deck");
@@ -57,10 +65,18 @@ public class CardDeck {
     return pickedCards;
   }
 
-  public void addCards(ArrayList<Card> addedCards) {
+  /**
+   * TODO write this javadoc
+   */
+  public void addCards(List<Card> addedCards) {
     cards.addAll(addedCards);
   }
 
+  /**
+   * Getter for cards.
+   * 
+   * @return cards
+   */
   public ArrayList<Card> getCards() {
     return cards;
   }
