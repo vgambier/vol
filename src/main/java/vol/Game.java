@@ -1,6 +1,8 @@
 package vol;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
 import cards.Card;
 import cards.CardDeck;
 import cards.Color;
@@ -8,6 +10,9 @@ import cards.Rank;
 
 public class Game {
 
+  private static Scanner scanner = new Scanner(System.in);
+
+  private CardDeck cardDeck;
   private ArrayList<Player> players;
   private Player currentPlayer;
 
@@ -27,9 +32,7 @@ public class Game {
    */
   public void start() throws Exception {
 
-    // TODO: two modes, one is silent with no instructions on what is going on
-
-    CardDeck cardDeck = new CardDeck();
+    cardDeck = new CardDeck();
     cardDeck.shuffle();
 
     boolean isOver = false;
@@ -39,19 +42,25 @@ public class Game {
       for (Player player : players) {
 
         currentPlayer = player;
-
         boolean canPlay = true;
+
         while (canPlay) {
 
           // Pick a card
-          player.pickNCards(1, cardDeck);
+          player.pickNCardsFromDeck(1, cardDeck);
 
           // Show hand
-          System.out.print("Current hand of " + player.getName() + ": ");
-          System.out.println(player.getHand().toString());
+          System.out.printf("%s's turn\n", player.getName());
+          System.out.printf("Available cards: %s\n", player.getHand().toString());
+          CardDeck inactiveCards = player.getInactiveCards();
+          if (!inactiveCards.getCards().isEmpty()) {
+            System.out.printf("Unavailable cards: %s\n", inactiveCards.toString());
+          }
 
           // Play cards
-          for (Card card : player.getHand().getCards()) {
+          for (int i = 0; i < player.getHand().getCards().size(); i++) {
+
+            Card card = player.getHand().getCards().get(i);
 
             // TODO let players choose the order of their plays
 
@@ -63,10 +72,14 @@ public class Game {
             System.out.print(color + ": ");
             colorEffect(color);
 
-            // TODO use up the card by moving it to another array
-            // TODO how to distinguish between the used up color and used up rank? the whole must be
-            // remembered
+            // Move the used card from the player's hand to the player's inactive cards
+            player.getHand().getCards().remove(card);
+            player.getInactiveCards().addCards(Collections.singletonList(card));
+
           }
+
+          optionalActions(); // TODO technically the player should be able to do this at any time
+          // when the "let the player choose order" feature is implemented, change this as well
 
           // Don't let the player play again if they're not under the effect of a club
           if (!player.canPlayTwice()) {
@@ -82,6 +95,58 @@ public class Game {
 
     }
 
+  }
+
+  private void optionalActions() throws Exception {
+
+    // TODO what if the player has 4 queens and want to use the queen power twice
+    // (similar issue for the other powers)
+
+    if (currentPlayer.getNbSeven() >= 4 && askUser("You have 4 sevens. Would you like to peek at the deck?")) {
+      // TODO: peek at the deck
+      // TODO: decrease the number of sevens (substract by 3)
+      // TODO: make it impossible for this to happen again, according to the rules
+    }
+
+    if (currentPlayer.getNbEight() >= 4 && askUser("You have 4 eights. Would you like to win?")) {
+      // TODO: win
+    }
+
+    if (currentPlayer.getNbUseableQueens() >= 4 && askUser("You have 2 queens. Would you like to pick 4 cards?")) {
+      currentPlayer.pickNCardsFromDeck(4, cardDeck);
+      // TODO make the player play them
+    }
+
+    if (currentPlayer.getNbHearts() > 0) {
+      // TODO: heart behavior
+    }
+
+    if (currentPlayer.getNbUseableDiamonds() >= 4 && askUser("You have 4 diamonds. Would you like to pick 4 cards?")) {
+      currentPlayer.pickNCardsFromDeck(4, cardDeck);
+      // TODO make the player play them
+    }
+
+  }
+
+  /**
+   * Asks the user the input question. Only accepted answers are "Y" and "N".
+   * 
+   * @param message
+   * @return true if the user replied "Y", false if the they replied "N"
+   */
+  private boolean askUser(String message) {
+    String userInput = null;
+    while ("Y".equals(userInput) || "N".equals(userInput)) {
+
+      if (userInput != null) {
+        System.out.print("Invalid input"); // This only shows up after the second time.
+      }
+      userInput = "";
+
+      System.out.println(message + " (Y/N)");
+      userInput = scanner.nextLine();
+    }
+    return "Y".equals(userInput);
   }
 
   /**
@@ -197,15 +262,13 @@ public class Game {
   }
 
   private void luckySeven() {
-    // TODO implement luckySeven
-    System.out.println("Wait until you get 3 of them");
-    // nbSeven++;
+    currentPlayer.incrementNbHearts();
+    System.out.printf("You now have %s seven(s) at your disposal.\n", currentPlayer.getNbSeven());
   }
 
   private void pickedEight() {
-    // TODO implement pickedEight
-    System.out.println("Wait until you get 4 of them");
-    // nbEight++;
+    currentPlayer.incrementNbEight();
+    System.out.printf("You now have %s eight(s) at your disposal.\n", currentPlayer.getNbEight());
   }
 
   private void opponentReplayCards() {
@@ -225,9 +288,9 @@ public class Game {
   }
 
   private void pickedQueen() {
-    // TODO implement pickedQueen
-    System.out.println("Wait until you get 2, or check if you win");
-    // nbUseableQueens++;
+    // TODO check if you win somewhere
+    currentPlayer.incrementNbUseableQueens();
+    System.out.printf("You now have %s queen(s) at your disposal.\n", currentPlayer.getNbUseableQueens());
   }
 
   private void cancelCardNoCounter() {
@@ -249,20 +312,18 @@ public class Game {
 
   private void opponentPlaysTwice() {
     Player nextPlayer = nextPlayer();
-    System.out.printf("%s will play twice when it is their turn\n", nextPlayer);
+    System.out.printf("%s will play twice when it is their turn.\n", nextPlayer);
     nextPlayer.setCanPlayTwice(true);
   }
 
   private void pickedDiamond() {
-    // TODO implement pickedDiamond
-    System.out.println("Picked a diamond");
-    // nbUseableDiamonds++;
+    currentPlayer.incrementNbUseableDiamonds();
+    System.out.printf("You now have %s diamond(s) at your disposal.\n", currentPlayer.getNbUseableDiamonds());
   }
 
   private void pickedHeart() {
-    // TODO implement pickedHeart
-    System.out.println("Picked a heart");
-    // nbHearts++;
+    currentPlayer.incrementNbHearts();
+    System.out.printf("You now have %s heart(s) at your disposal.\n", currentPlayer.getNbHearts());
   }
 
   private void giveCardtoOpponent() {

@@ -84,6 +84,8 @@ public class CardDeck {
   @Override
   public String toString() {
 
+    // TODO stream magic
+
     StringBuilder str = new StringBuilder();
 
     for (Card card : cards) {

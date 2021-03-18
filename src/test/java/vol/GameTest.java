@@ -23,8 +23,7 @@ public class GameTest {
   public void test__picking_spade_makes_opponent_play_twice() throws Exception {
 
     Mockito.doNothing().when(mockedDeck).shuffle();
-    Mockito.when(mockedDeck.pickNCards(1))
-        .thenReturn(Collections.singletonList(new Card(Color.SPADES, Rank.ACE)))
+    Mockito.when(mockedDeck.pickNCards(1)).thenReturn(Collections.singletonList(new Card(Color.SPADES, Rank.ACE)))
         .thenReturn(Collections.singletonList(new Card(Color.CLUBS, Rank.FOUR)))
         .thenReturn(Collections.singletonList(new Card(Color.HEARTS, Rank.TWO)));
 
@@ -38,5 +37,11 @@ public class GameTest {
     assertEquals(2, gabriel.getHand().getCards().size());
 
   }
+
+  // TODO 7 test
+  // TODO 8 test
+  // TODO Queen test
+  // TODO Heart test
+  // TODO Diamond test
 
 }
