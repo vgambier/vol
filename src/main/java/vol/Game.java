@@ -262,7 +262,7 @@ public class Game {
   }
 
   private void luckySeven() {
-    currentPlayer.incrementNbHearts();
+    currentPlayer.incrementNbSeven();
     System.out.printf("You now have %s seven(s) at your disposal.\n", currentPlayer.getNbSeven());
   }
 
